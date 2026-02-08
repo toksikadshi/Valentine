@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Be My Valentine?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --secondary-color: #ff8fa3;
+            --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --glass-bg: rgba(255, 255, 255, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* Prevent scrolling from flying buttons */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Floating Hearts Background */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.6);
+            animation: float-up linear infinite;
+            z-index: 0;
+            pointer-events: none;
+            font-size: 20px;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(110vh) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Main Container */
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            animation: entrance 1s ease-out forwards;
+        }
+
+        @keyframes entrance {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #d6336c;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+            line-height: 1.2;
+        }
+
+        /* Buttons Area */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 100px; /* Space for initial buttons */
+        }
+
+        button {
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            padding: 12px 32px;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+        }
+
+        /* Yes Button - Heart Shape */
+        #yes-btn {
+            background-color: #ff4d6d;
+            color: white;
+            z-index: 100;
+            position: relative;
+            
+            /* Heart Shape Styling */
+            width: 100px;
+            height: 90px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0; /* Override pill shape */
+            box-shadow: none; /* Shadow handled differently for heart */
+            
+            /* Animation setup */
+            --base-scale: 1;
+            transform: scale(var(--base-scale));
+            animation: heartbeat 2s infinite;
+        }
+
+        #yes-btn::before,
+        #yes-btn::after {
+            content: "";
+            background-color: #ff4d6d;
+            border-radius: 50%;
+            position: absolute;
+            width: 100px; /* Same as button width */
+            height: 100px;
+            top: -50px;
+            left: 0;
+            box-shadow: 0 -5px 15px rgba(255, 77, 109, 0.2); /* Subtle shadow on lobes */
+        }
+
+        #yes-btn::after {
+            left: 50px;
+            top: 0;
+        }
+
+        #yes-btn::before {
+            left: -50px;
+            top: 0;
+        }
+        
+        /* Instead of pseudo-elements which are hard to click and align text in center of,
+           let's use a cleaner SVG mask or clip-path approach for better text alignment,
+           OR keep it simple with a rotated square + circles approach.
+           
+           Actually, the "square rotated 45deg" method is classic but text rotation is annoying.
+           Let's use a background image or clip-path for the button shape?
+           
+           Better approach for a clickable button with text: 
+           Use a standard button but shaped like a heart.
+        */
+        
+        #yes-btn {
+            /* Resetting to use a simpler approach: Rotated square */
+            width: 60px;
+            height: 60px;
+            background: #ff4d6d;
+            transform: rotate(-45deg) scale(var(--base-scale));
+            box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+            margin: 30px; /* Spacing for the lobes */
+            border-radius: 0;
+            padding: 0;
+        }
+
+        #yes-btn::before,
+        #yes-btn::after {
+            content: "";
+            width: 60px;
+            height: 60px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        #yes-btn::before {
+            top: -30px;
+            left: 0;
+        }
+
+        #yes-btn::after {
+            left: 30px;
+            top: 0;
+        }
+        
+        /* The text inside needs to be counter-rotated */
+        #yes-btn span {
+            display: block;
+            transform: rotate(45deg);
+            font-size: 1rem; /* Slightly smaller to fit */
+            pointer-events: none; /* Let clicks pass to button */
+            z-index: 10;
+            position: relative;
+            width: 100%;
+            text-align: center;
+        }
+
+        #yes-btn:hover {
+            /* Handled by animation */
+        }
+
+        @keyframes heartbeat {
+            0% { transform: rotate(-45deg) scale(var(--base-scale)); }
+            5% { transform: rotate(-45deg) scale(calc(var(--base-scale) * 1.1)); }
+            10% { transform: rotate(-45deg) scale(var(--base-scale)); }
+            15% { transform: rotate(-45deg) scale(calc(var(--base-scale) * 1.1)); }
+            20% { transform: rotate(-45deg) scale(var(--base-scale)); }
+            100% { transform: rotate(-45deg) scale(var(--base-scale)); }
+        }
+
+        /* No Button */
+        .no-btn {
+            background: white;
+            color: #555;
+            position: relative; /* Initial no button is relative */
+        }
+
+        .no-btn:hover {
+            transform: scale(1.05);
+            background: #f8f9fa;
+        }
+
+        /* Dynamically generated No buttons */
+        .no-btn.floating {
+            position: fixed;
+            z-index: 20;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Success State */
+        .success-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #d6336c;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .replay-btn {
+            background: white;
+            color: #ff4d6d;
+            font-size: 1.2rem;
+            padding: 10px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .replay-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Canvas for confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            button { font-size: 1rem; padding: 10px 24px; }
+            .success-message { font-size: 2rem; padding: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Background Elements -->
+    <div id="bg-container"></div>
+
+    <div class="container" id="main-container">
+        <h1 id="headline">Will you be my Valentine? 💖</h1>
+        <div class="buttons">
+            <button id="yes-btn" onclick="handleYesClick()"><span>Yes 💕</span></button>
+            <button id="no-btn" class="no-btn" onclick="handleNoClick()">No 😐</button>
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div class="success-container" id="success-screen">
+        <div class="success-message">
+            Yayyy 💕 I knew it!<br>
+            Happy Valentine’s Day 💖
+        </div>
+        <button class="replay-btn" onclick="handleLoveClick()">I Love You Jaan ❤️</button>
+    </div>
+
+    <!-- Hidden Audio Element -->
+    <audio id="bg-music" loop>
+        <source src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Mendelssohn_Wedding_March.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // =================================
+        // CONFIG & STATE
+        // =================================
+        const noTexts = [
+            "Are you really sure? 🥺",
+            "Itna bhi kya bhaav 😭",
+            "Dil toot jayega mera 💔",
+            "Ek chance aur pls 🙏",
+            "Chocolate meri taraf se 🍫",
+            "I'm Going to die",
+            "Yep I'm Dead",
+            "Okay You're Talking to Asad's Soul",
+            "Please Jaan"
+        ];
+
+        let yesScale = 1;
+        let noClickCount = 0;
+        
+        // =================================
+        // INIT
+        // =================================
+        window.onload = function() {
+            // 1. Read Name from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');
+            const headline = document.getElementById('headline');
+            
+            if (name) {
+                headline.innerText = `${name}, will you be my Valentine? 💖`;
+            }
+
+            // 2. Create Background Elements
+            createBackgroundHearts();
+            createParticles();
+        };
+
+        function createBackgroundHearts() {
+            const bgContainer = document.getElementById('bg-container');
+            const heartCount = 30;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's'; // 4-7s
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                bgContainer.appendChild(heart);
+            }
+        }
+
+        function createParticles() {
+            const bgContainer = document.getElementById('bg-container');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.animationDelay = (Math.random() * 3) + 's';
+                bgContainer.appendChild(particle);
+            }
+        }
+
+        // =================================
+        // INTERACTION LOGIC
+        // =================================
+        function handleNoClick() {
+            // 1. Generate NEW No Button
+            const newNoBtn = document.createElement('button');
+            
+            // Sequential text logic
+            const textIndex = Math.min(noClickCount, noTexts.length - 1);
+            newNoBtn.innerText = noTexts[textIndex];
+            noClickCount++;
+
+            newNoBtn.classList.add('no-btn', 'floating');
+            
+            // Get position of the original No button
+            const originBtn = document.getElementById('no-btn');
+            const rect = originBtn.getBoundingClientRect();
+            
+            // Place near the original No button with slight chaos
+            const offset = 50; // Spread radius
+            const randomX = rect.left + (Math.random() - 0.5) * offset;
+            const randomY = rect.top + (Math.random() - 0.5) * offset;
+
+            newNoBtn.style.left = randomX + 'px';
+            newNoBtn.style.top = randomY + 'px';
+            
+            // Add click handler to new button (recursion!)
+            newNoBtn.onclick = handleNoClick;
+            
+            document.body.appendChild(newNoBtn);
+
+            // 2. Increase Yes Button Size
+            const yesBtn = document.getElementById('yes-btn');
+            
+            // Check if current size is already covering most of screen
+            // Initial width is 80px. Scale factor * 80px = current width approx (diagonal is larger)
+            // A safer check: getBoundingClientRect().width
+            const currentWidth = yesBtn.getBoundingClientRect().width;
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // Limit to approx 95% of the smaller screen dimension
+            const maxDimension = Math.min(windowWidth, windowHeight) * 0.95;
+            
+            if (currentWidth < maxDimension) {
+                yesScale += 0.5; // Increase scale significantly
+                yesBtn.style.setProperty('--base-scale', yesScale);
+            }
+
+            // Change Text to Grab Attention
+            // Reverted to constant text as per request
+            /*
+            const yesTexts = ["Yes 💕", "Are you sure? 🥺", "Baby please? 🥺", "Just click YES! 💖", "I LOVE YOU! ❤️", "SAY YES! 💍"];
+            if (yesScale > 2) {
+                 yesBtn.innerText = yesTexts[Math.min(Math.floor(yesScale), yesTexts.length - 1)] || "YES!!! 💕";
+            }
+            */
+
+            // Adjust margin to prevent overlap if it gets huge, but scale transform is usually centered.
+            // Let's add more glow intensity
+            const glow = 10 + (yesScale * 5);
+            yesBtn.style.boxShadow = `-5px 5px ${glow}px rgba(255, 77, 109, ${0.4 + (yesScale * 0.1)})`;
+        }
+
+        function handleYesClick() {
+            // 1. Remove all No buttons
+            const noBtns = document.querySelectorAll('.no-btn');
+            noBtns.forEach(btn => btn.remove());
+            
+            // 2. Hide Main Container
+            document.getElementById('main-container').style.display = 'none';
+
+            // 3. Show Success Screen
+            const successScreen = document.getElementById('success-screen');
+            successScreen.style.display = 'flex';
+
+            // 4. Trigger Confetti
+            startConfetti();
+
+            // 5. Play Music
+            const audio = document.getElementById('bg-music');
+            if (audio) {
+                audio.volume = 0.5;
+                audio.play().catch(e => console.log("Audio play failed (user interaction required first):", e));
+            }
+        }
+
+        function handleLoveClick() {
+            // Trigger intense heart spread
+            spreadHearts();
+            
+            // Optional: Play a sound or add more effects?
+            // For now, just the visual explosion requested.
+        }
+
+        // =================================
+        // CONFETTI LOGIC (Canvas)
+        // =================================
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiParticles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function startConfetti() {
+            const colors = ['#ff4d6d', '#ff8fa3', '#ffffff', '#ffeb3b', '#8bc34a'];
+            
+            for (let i = 0; i < 400; i++) {
+                confettiParticles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    r: Math.random() * 10 + 5, // Size
+                    dx: (Math.random() - 0.5) * 20, // Velocity X
+                    dy: (Math.random() - 0.5) * 20, // Velocity Y
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10,
+                    tiltAngle: Math.random() * 10,
+                    tiltAngleIncr: Math.random() * 0.1 + 0.05,
+                    shape: Math.random() > 0.5 ? 'circle' : 'heart' // Mix shapes
+                });
+            }
+            requestAnimationFrame(renderConfetti);
+        }
+
+        function spreadHearts() {
+            const colors = ['#ff4d6d', '#ff8fa3', '#d6336c', '#ffeb3b', '#ffffff'];
+            
+            // Add 200 new heart particles
+            for (let i = 0; i < 200; i++) {
+                confettiParticles.push({
+                    x: Math.random() * canvas.width, // Spread everywhere
+                    y: Math.random() * canvas.height, // Spread everywhere
+                    r: Math.random() * 15 + 8, // Slightly larger
+                    dx: (Math.random() - 0.5) * 5, // Slower horizontal
+                    dy: (Math.random() - 0.5) * 5 - 2, // Slight upward/downward mix
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10,
+                    tiltAngle: Math.random() * 10,
+                    tiltAngleIncr: Math.random() * 0.1 + 0.05,
+                    shape: 'heart' // ONLY hearts
+                });
+            }
+        }
+
+        function drawHeart(x, y, size, color) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            const topCurveHeight = size * 0.3;
+            ctx.moveTo(x, y + topCurveHeight);
+            // top left curve
+            ctx.bezierCurveTo(
+                x, y, 
+                x - size / 2, y, 
+                x - size / 2, y + topCurveHeight
+            );
+            // bottom left curve
+            ctx.bezierCurveTo(
+                x - size / 2, y + (size + topCurveHeight) / 2, 
+                x, y + (size + topCurveHeight) / 2, 
+                x, y + size
+            );
+            // bottom right curve
+            ctx.bezierCurveTo(
+                x, y + (size + topCurveHeight) / 2, 
+                x + size / 2, y + (size + topCurveHeight) / 2, 
+                x + size / 2, y + topCurveHeight
+            );
+            // top right curve
+            ctx.bezierCurveTo(
+                x + size / 2, y, 
+                x, y, 
+                x, y + topCurveHeight
+            );
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function renderConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            confettiParticles.forEach((p, index) => {
+                p.tiltAngle += p.tiltAngleIncr;
+                p.x += Math.sin(p.tiltAngle) * 0.5;
+                p.y += p.dy + 2; // Gravity + initial velocity
+                p.x += p.dx;
+                
+                // Slow down explosion velocity
+                p.dx *= 0.95;
+                p.dy *= 0.95;
+                
+                // Gravity takes over
+                p.dy += 0.1;
+
+                if (p.shape === 'heart') {
+                    drawHeart(p.x, p.y, p.r, p.color);
+                } else {
+                    ctx.beginPath();
+                    ctx.fillStyle = p.color;
+                    ctx.arc(p.x, p.y, p.r / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                if (p.y > canvas.height) {
+                    // Remove particle? Or respawn from top?
+                    // Let's respawn from top to keep the party going
+                    p.y = -20;
+                    p.x = Math.random() * canvas.width;
+                    p.dy = Math.random() * 5 + 2;
+                    p.dx = 0;
+                }
+            });
+
+            requestAnimationFrame(renderConfetti);
+        }
+
+    </script>
+</body>
+</html>
