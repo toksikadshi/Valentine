@@ -248,6 +248,11 @@
             background: white;
             color: #555;
             position: relative; /* Initial no button is relative */
+            white-space: normal; /* Allow text wrapping */
+            max-width: 220px; /* Force wrapping for long text */
+            padding: 12px 20px; /* Reduce padding slightly to fit more text */
+            line-height: 1.3; /* Better readability for multiline */
+            text-align: center;
         }
 
         .no-btn:hover {
@@ -325,9 +330,72 @@
 
         /* Mobile Adjustments */
         @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            button { font-size: 1rem; padding: 10px 24px; }
-            .success-message { font-size: 2rem; padding: 0 1rem; }
+            .container {
+                padding: 1.5rem;
+                width: 95%; /* Use more width on mobile */
+            }
+            h1 { 
+                font-size: 1.8rem; 
+                margin-bottom: 1.5rem;
+            }
+            button { 
+                font-size: 1rem; 
+                padding: 10px 20px; 
+            }
+            .success-message { 
+                font-size: 2rem; 
+                padding: 0 1rem; 
+            }
+            /* Adjust Yes button margin for mobile to fit better */
+            #yes-btn {
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 { 
+                font-size: 1.5rem; 
+            }
+            /* Stack buttons vertically if needed or reduce gap */
+            .buttons {
+                gap: 15px;
+            }
+            #yes-btn {
+                /* Make it slightly smaller on very small screens if needed, 
+                   but 60px is already small. 
+                   Just ensure margins don't push it off.
+                */
+                margin: 15px; 
+            }
+            /* Make lobes proportional if we scaled down base size, 
+               but fixed px is fine for 60px base. 
+            */
+            
+            .success-message {
+                font-size: 1.5rem;
+            }
+            
+            .replay-btn {
+                font-size: 1rem;
+                padding: 8px 20px;
+                white-space: normal; /* Allow text wrapping if needed */
+                max-width: 90%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-height: 500px) and (orientation: landscape) {
+            /* Landscape mode on phones */
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            .container {
+                padding: 0.5rem;
+            }
+            #yes-btn {
+                margin: 10px;
+            }
         }
     </style>
 </head>
@@ -370,11 +438,11 @@
             "Itna bhi kya bhaav 😭",
             "Dil toot jayega mera 💔",
             "Ek chance aur pls 🙏",
-            "Momos Khilaunga Date Par🥟",
+            "Momos Khilaunga Date par 🥟",
             "I'm Going to die",
             "Yep I'm Dead",
-            "Okay You're Talking to My Ghost",
-            "Please Jaan🥺"
+            "Okay You're Talking to My Soul",
+            "Please Jaan 🥺"
         ];
 
         let yesScale = 1;
@@ -650,6 +718,4 @@
 
     </script>
 </body>
-
 </html>
-
